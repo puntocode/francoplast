@@ -13,11 +13,7 @@
                 </div>
                 <div class="user-img d-flex align-items-center">
                     <div class="avatar">
-                        @if (count(Auth::user()->roles) > 0)
-                            <img src="{{ Auth::user()->roles[0]->name == 'Admin' ? asset('images/admin.svg') : asset('images/auditor.svg') }}" height="44">
-                        @else
-                            <img src="{{ asset('images/no-rol.svg') }}" height="44">
-                        @endif
+                        <img src="{{ asset('images/admin.svg') }}" height="44">
                     </div>
                 </div>
             </div>
