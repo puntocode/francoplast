@@ -13,7 +13,7 @@
                 </div>
                 <div class="user-img d-flex align-items-center">
                     <div class="avatar">
-                        <img src="{{ asset('images/admin.svg') }}" height="44">
+                        <img src="{{ asset('images/admin.svg') }}" height="45">
                     </div>
                 </div>
             </div>

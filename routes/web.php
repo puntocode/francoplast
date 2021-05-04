@@ -25,5 +25,5 @@ Route::get('/dashboard', function () {
 })->middleware('auth');
 
 Route::get('/test', function () {
-    return "Hola mundo"
+    return "Hola mundo";
 });
