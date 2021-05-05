@@ -22,7 +22,7 @@ Auth::routes(["register" => false]);
 
 Route::get('/dashboard', function () {
     return view('dashboard.index');
-});
+})->middleware('can:dashboard');
 
 Route::get('/test', function () {
     return "Hola mundo";
