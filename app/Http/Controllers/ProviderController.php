@@ -14,7 +14,8 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        //
+        $providers = Provider::paginate();
+        return view("providers.index", compact('providers'));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+        return view("providers.create");
     }
 
     /**
@@ -35,19 +36,17 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'city' => 'required',
+        ]);
+
+        Provider::create($request->all());
+
+        return redirect()->route('providers.index')->with('message', 'Proveedor creado correctamente!!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Provider  $provider
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Provider $provider)
-    {
-        //
-    }
+ 
 
     /**
      * Show the form for editing the specified resource.
@@ -57,7 +56,7 @@ class ProviderController extends Controller
      */
     public function edit(Provider $provider)
     {
-        //
+        return view("providers.edit", compact('provider'));
     }
 
     /**
@@ -69,7 +68,20 @@ class ProviderController extends Controller
      */
     public function update(Request $request, Provider $provider)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'city' => 'required',
+        ];
+
+        $this->validate($request, $rules);
+        $provider->fill($request->all());
+
+        if($provider->isClean()){
+            return back()->with('error', 'Se debe modificar por lo menos un campo para editar!!');
+        }
+
+        $provider->save();
+        return redirect()->route('providers.index')->with('message', 'Proveedor modificado correctamente!!');
     }
 
     /**
@@ -78,8 +90,12 @@ class ProviderController extends Controller
      * @param  \App\Models\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Provider $provider)
+    public function destroy($id)
     {
-        //
+        $provider = Provider::find($id);
+        $provider->delete();
+        return response()->json([
+            'message' => 'Eliminacion correcta!'
+        ]);
     }
 }

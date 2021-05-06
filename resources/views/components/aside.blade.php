@@ -6,23 +6,31 @@
             {{-- <li class="sidebar-title">Menu</li> --}}
             <li class="sidebar-item {{ (request()->is('dashboard')) ? 'active' : '' }}">
                 <a href="/dashboard" class='sidebar-link'>
-                    <i class="fas fa-chart-pie"></i>
+                    <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            @can('companies.index')
-                <li class="sidebar-item {{ (request()->is('companies*')) ? 'active' : '' }}">
-                    <a href="{{ route('companies.index') }}" class='sidebar-link'>
-                        <i class="fas fa-building"></i>
-                        <span>Empresas</span>
+            @can('products.index')
+                <li class="sidebar-item {{ (request()->is('products*')) ? 'active' : '' }}">
+                    <a href="{{ route('products.index') }}" class='sidebar-link'>
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Productos</span>
                     </a>
                 </li>
             @endcan
-            @can('partners.index')
-                <li class="sidebar-item {{ (request()->is('partners*')) ? 'active' : '' }}">
-                    <a href="{{ route('partners.index') }}" class='sidebar-link'>
+            @can('providers.index')
+                <li class="sidebar-item {{ (request()->is('providers*')) ? 'active' : '' }}">
+                    <a href="{{ route('providers.index') }}" class='sidebar-link'>
+                        <i class="fas fa-truck"></i>
+                        <span>Proveedores</span>
+                    </a>
+                </li>
+            @endcan
+            @can('customers.index')
+                <li class="sidebar-item {{ (request()->is('customers*')) ? 'active' : '' }}">
+                    <a href="{{ route('customers.index') }}" class='sidebar-link'>
                         <i class="fas fa-user-tie"></i>
-                        <span>Colaboradores</span>
+                        <span>Clientes</span>
                     </a>
                 </li>
             @endcan

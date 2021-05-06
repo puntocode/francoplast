@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +29,8 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware('can:dashboard');
 
-Route::get('/test', function () {
-    return "Hola mundo";
-});
+//Route::resource('users', UserController::class)->middleware('can:users.index');
+Route::resource('customers', CustomerController::class)->middleware('can:customers.index');
+Route::resource('providers', ProviderController::class)->middleware('can:providers.index');
+Route::resource('products', ProductController::class)->middleware('can:products.index');
+

@@ -14,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,19 +36,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'size' => 'required',
+            'cost' => 'required|integer',
+            'sale' => 'required|integer',
+            'stock' => 'required|integer',
+        ]);
+
+        $code = mt_rand(1000,9999);
+        $product = new Product;
+        $product->name = $data['name'];
+        $product->size = $data['size'];
+        $product->cost = $data['cost'];
+        $product->sale = $data['sale'];
+        $product->stock = $data['stock'];
+        $product->code = $code;
+        if($request->has('wholesaler')){
+            $product->wholesaler = $request->wholesaler;
+        }
+        
+        $product->save();
+
+        return redirect()->route('products.index')->with('message', 'Producto creado correctamente!!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -57,7 +70,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -69,7 +82,26 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'size' => 'required',
+            'cost' => 'required|integer',
+            'sale' => 'required|integer',
+            'stock' => 'required|integer',
+        ]);
+
+        $product->name = $data['name'];
+        $product->size = $data['size'];
+        $product->cost = $data['cost'];
+        $product->sale = $data['sale'];
+        $product->stock = $data['stock'];
+        if($request->has('wholesaler')){
+            $product->wholesaler = $request->wholesaler;
+        }
+        
+        $product->save();
+
+        return redirect()->route('products.index')->with('message', 'Producto modificado correctamente!!');
     }
 
     /**
@@ -78,8 +110,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        return response()->json([
+            'message' => 'Eliminacion correcta!'
+        ]);
     }
 }

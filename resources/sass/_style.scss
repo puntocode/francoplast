@@ -57,6 +57,12 @@
     }
 }
 
+.table{
+    thead{
+        background-color: $gray;
+    }
+}
+
 .upload-logo {
     display: flex;
     flex-direction: column;
@@ -70,6 +76,8 @@
         padding: 15px;
     }
 }
+
+
 
 @media (min-width: 992px) {
     #sidebar-wrapper {

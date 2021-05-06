@@ -14,7 +14,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::paginate();
+        return view('customers.index')->with('customers', $customers);
     }
 
     /**
@@ -24,7 +25,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view("customers.create");
     }
 
     /**
@@ -35,7 +36,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'city' => 'required',
+        ]);
+
+        Customer::create($request->all());
+        return redirect()->route('customers.index')->with('message', 'Cliente creado correctamente!!');
     }
 
     /**
@@ -46,7 +53,7 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return view("customers.edit", compact('customer'));
     }
 
     /**
@@ -57,7 +64,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return view("customers.edit", compact('customer'));
     }
 
     /**
@@ -69,7 +76,20 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'city' => 'required',
+        ];
+
+        $this->validate($request, $rules);
+        $customer->fill($request->all());
+
+        if($customer->isClean()){
+            return back()->with('error', 'Se debe modificar por lo menos un campo para editar!!');
+        }
+
+        $customer->save();
+        return redirect()->route('customers.index')->with('message', 'Cliente modificado correctamente!!');
     }
 
     /**
@@ -78,8 +98,12 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+     public function destroy($id)
     {
-        //
+        $customers = Customer::find($id);
+        $customers->delete();
+        return response()->json([
+            'message' => 'Eliminacion correcta!'
+        ]);
     }
 }
